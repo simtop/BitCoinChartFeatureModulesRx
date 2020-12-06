@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">BitCoinApp</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="chart_fragment_label">Chart Fragment</string>
+    <string name="price">Price: %s</string>
+    <string name="date">Date: %s</string>
+    <string name="description">Description: %s</string>
+    <string name="allergy_info">Allergy Information: %s</string>
+    <string name="retry">Retry</string>
+</resources>

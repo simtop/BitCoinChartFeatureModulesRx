@@ -1,0 +1,44 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion ApplicationConfig.compileSdk
+
+    defaultConfig {
+        minSdkVersion ApplicationConfig.minSdk
+        targetSdkVersion ApplicationConfig.targetSdk
+        versionCode ApplicationConfig.versionCode
+        versionName ApplicationConfig.versionName
+
+        testInstrumentationRunner "com.simtop.bitcoinapp.MockTestRunner"
+    }
+
+    buildTypes {
+        debug {
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation Libs.kotlin_stdlib_jdk7
+    implementation Libs.junit
+    implementation Libs.rxjava
+    implementation Libs.lifecycle_extensions
+    implementation Libs.constraintlayout
+}

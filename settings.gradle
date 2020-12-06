@@ -1,0 +1,5 @@
+include ':app'
+rootProject.name = "BitCoinApp"
+include ':chartsfeature'
+include ':core'
+include ':testutils'

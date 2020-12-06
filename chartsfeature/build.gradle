@@ -1,0 +1,108 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion ApplicationConfig.compileSdk
+
+    defaultConfig {
+        minSdkVersion ApplicationConfig.minSdk
+        targetSdkVersion ApplicationConfig.targetSdk
+        versionCode ApplicationConfig.versionCode
+        versionName ApplicationConfig.versionName
+
+        testInstrumentationRunner "com.simtop.bitcoinapp.MockTestRunner"
+    }
+
+    buildTypes {
+        debug {
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Always show the result of every unit test, even if it passes.
+    testOptions.unitTests {
+        includeAndroidResources = true
+
+        all {
+            testLogging {
+                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+            }
+            maxHeapSize = "1024m"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+    //Solves some problems for compilation for UI Test
+    packagingOptions {
+        pickFirst "**/attach_hotspot_windows.dll"
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/licenses/ASM'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation Libs.kotlin_stdlib_jdk7
+    implementation Libs.androidx_core_core_ktx
+    implementation Libs.appcompat
+    implementation Libs.material
+    implementation Libs.constraintlayout
+    implementation Libs.navigation_fragment_ktx
+    implementation Libs.navigation_ui
+    implementation Libs.glide
+    implementation Libs.lifecycle_extensions
+    implementation Libs.converter_gson
+    implementation Libs.logging_interceptor
+
+    implementation Libs.dagger
+    kapt Libs.dagger_compiler
+
+    implementation project(Modules.core)
+    implementation project(Modules.test_utils)
+    implementation Libs.rxjava
+    implementation Libs.adapter_rxjava2
+    implementation Libs.mpandroidchart
+
+    testImplementation Libs.mockk_android
+    testImplementation Libs.mockk
+    testImplementation Libs.core_testing
+    testImplementation Libs.kotlinx_coroutines_test
+    testImplementation Libs.kluent
+    testImplementation Libs.mockwebserver
+    testImplementation Libs.junit
+
+    androidTestImplementation Libs.kotlin_test_junit
+    androidTestImplementation Libs.kotlinx_coroutines_test
+    androidTestImplementation Libs.espresso_core
+    androidTestImplementation Libs.espresso_contrib
+    androidTestImplementation Libs.espresso_idling_resource
+    androidTestImplementation Libs.androidx_test_runner
+    androidTestImplementation Libs.androidx_test_rules
+    androidTestImplementation Libs.androidx_test_core_ktx
+    androidTestImplementation Libs.mockk_android
+    androidTestImplementation Libs.mockk
+    androidTestImplementation Libs.junit_ktx
+    androidTestImplementation Libs.navigation_testing
+    androidTestImplementation Libs.dagger
+    kaptAndroidTest Libs.dagger_compiler
+    androidTestImplementation Libs.fragment_testing
+    androidTestImplementation Libs.mockwebserver
+}
