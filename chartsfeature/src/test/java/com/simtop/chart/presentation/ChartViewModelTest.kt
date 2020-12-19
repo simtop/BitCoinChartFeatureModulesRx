@@ -5,9 +5,11 @@ import com.simtop.chart.presentation.chart.ChartViewState
 import com.simtop.chart.presentation.chart.ChartViewModel
 import com.simtop.chart.domain.usecases.GetMarketPriceUseCase
 import com.simtop.chart.utils.fakeMarketPriceModel
+import com.simtop.testutils.RxTestSchedulerRule
 import com.simtop.testutils.core.testObserver
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.Single
 import org.amshove.kluent.shouldBeEqualTo
@@ -20,30 +22,24 @@ internal class ChartViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
+    @get:Rule
+    val rxJavaTestRule = RxTestSchedulerRule()
+
     private val getMarketPriceUseCase: GetMarketPriceUseCase = mockk()
 
-    private val chartViewModel: ChartViewModel by lazy {
-        ChartViewModel(getMarketPriceUseCase)
-    }
+    private lateinit var chartViewModel: ChartViewModel
 
     @Test
-    fun `when we get market model it succeeds and shows loader`() {
-
-        coEvery { getMarketPriceUseCase.execute(any()) } returns Single.just(
+    fun `when we get market model it succeeds`() {
+        every { getMarketPriceUseCase.execute(any()) } returns Single.just(
             fakeMarketPriceModel
         )
+
+        chartViewModel = ChartViewModel(getMarketPriceUseCase)
+
         val liveDataUnderTest = chartViewModel.chartViewState.testObserver()
 
-        chartViewModel.getMarketPrice()
-
-        coVerify(exactly = 1) {
-            getMarketPriceUseCase.execute(any())
-        }
-
-        liveDataUnderTest.observedValues.size shouldBeEqualTo 2
-        liveDataUnderTest.observedValues[0] shouldBeEqualTo ChartViewState.Loading
-        liveDataUnderTest.observedValues[1] shouldBeEqualTo ChartViewState.Success(fakeMarketPriceModel)
-
+        liveDataUnderTest.observedValues.last() shouldBeEqualTo ChartViewState.Success(fakeMarketPriceModel)
     }
 
     @Test
@@ -52,17 +48,14 @@ internal class ChartViewModelTest {
         coEvery { getMarketPriceUseCase.execute(any()) } returns Single.error(
             Exception(errorName)
         )
+        chartViewModel = ChartViewModel(getMarketPriceUseCase)
 
         val liveDataUnderTest = chartViewModel.chartViewState.testObserver()
-
-        chartViewModel.getMarketPrice()
 
         coVerify(exactly = 1) {
             getMarketPriceUseCase.execute(any())
         }
 
-        liveDataUnderTest.observedValues.size shouldBeEqualTo 2
-        liveDataUnderTest.observedValues[0] shouldBeEqualTo ChartViewState.Loading
-        liveDataUnderTest.observedValues[1] shouldBeEqualTo ChartViewState.Error(errorName)
+        liveDataUnderTest.observedValues.last() shouldBeEqualTo ChartViewState.Error(errorName)
     }
 }

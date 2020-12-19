@@ -1,11 +1,13 @@
 package com.simtop.chart.presentation.chart
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.simtop.chart.domain.models.marketprice.MarketPriceModel
 import com.simtop.chart.domain.usecases.GetMarketPriceUseCase
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -20,15 +22,18 @@ class ChartViewModel @Inject constructor(
 
     private val compositeDisposable = CompositeDisposable()
 
-    fun getMarketPrice() {
+    init {
+        compositeDisposable.add(getMarketPrice())
+    }
+
+    fun getMarketPrice(): Disposable {
         _chartViewState.postValue(ChartViewState.Loading)
-        getMarketPriceUseCase.execute(getMarketPriceUseCase.Params())
+        return getMarketPriceUseCase.execute(getMarketPriceUseCase.Params())
             .subscribeOn(Schedulers.io())
             .subscribe(
                 { _chartViewState.postValue(ChartViewState.Success(it)) },
                 { _chartViewState.postValue(ChartViewState.Error(it.message ?: "Default Error")) }
             )
-            .also { compositeDisposable.add(it) }
     }
 
     override fun onCleared() {
