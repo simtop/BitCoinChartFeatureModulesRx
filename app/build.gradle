@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'dagger.hilt.android.plugin'
+
 
 
 android {
@@ -74,8 +76,11 @@ dependencies {
     implementation Libs.converter_gson
     implementation Libs.logging_interceptor
 
-    implementation Libs.dagger
-    kapt Libs.dagger_compiler
+    implementation "com.google.dagger:hilt-android:2.28.1-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.28.1-alpha"
+
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
+    kapt "androidx.hilt:hilt-compiler:1.0.0-alpha01"
 
     implementation project(Modules.chartsfeature)
     implementation project(Modules.core)
@@ -109,8 +114,10 @@ dependencies {
     androidTestImplementation Libs.mockk
     androidTestImplementation Libs.junit_ktx
     androidTestImplementation Libs.navigation_testing
-    androidTestImplementation Libs.dagger
-    kaptAndroidTest Libs.dagger_compiler
+
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.28.1-alpha'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.28.1-alpha'
+
     androidTestImplementation Libs.fragment_testing
     androidTestImplementation Libs.mockwebserver
 }

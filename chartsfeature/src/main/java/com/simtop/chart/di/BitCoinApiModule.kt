@@ -3,7 +3,8 @@ package com.simtop.chart.di
 import dagger.Module
 import dagger.Provides
 import com.simtop.chart.data.network.BitCoinService
-import com.simtop.di.FeatureScope
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
@@ -11,25 +12,27 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
+@InstallIn(ApplicationComponent::class)
 object BitCoinApiModule {
 
     private const val BASE_URL = "baseUrl"
 
     @Provides
-    @FeatureScope
+    @Singleton
     fun provideBitCoinApi(retrofit: Retrofit): BitCoinService =
         retrofit.create(BitCoinService::class.java)
 
     @Provides
-    @FeatureScope
+    @Singleton
     fun provideLogginInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
     }
 
     @Provides
-    @FeatureScope
+    @Singleton
     fun providesBaseHttpClient(
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient.Builder {
@@ -39,7 +42,7 @@ object BitCoinApiModule {
     }
 
     @Provides
-    @FeatureScope
+    @Singleton
     fun provideRetrofit(
         @Named(BASE_URL) baseUrl: String,
         converterFactory: Converter.Factory,
@@ -55,13 +58,13 @@ object BitCoinApiModule {
     }
 
     @Provides
-    @FeatureScope
+    @Singleton
     fun provideConverterFactory(): Converter.Factory {
         return GsonConverterFactory.create()
     }
 
     @Provides
-    @FeatureScope
+    @Singleton
     fun provideAdapterFactory(): RxJava2CallAdapterFactory {
         return RxJava2CallAdapterFactory.create()
     }

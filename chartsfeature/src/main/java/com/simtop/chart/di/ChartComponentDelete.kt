@@ -1,10 +1,6 @@
 package com.simtop.chart.di
 
-import com.simtop.chart.presentation.chart.ChartFragment
-import com.simtop.di.ApplicationComponent
-import com.simtop.di.FeatureScope
-import dagger.Component
-
+/*
 @FeatureScope
 @Component(
     dependencies = [ApplicationComponent::class],
@@ -14,11 +10,12 @@ import dagger.Component
         BitCoinApiModule::class
     ]
 )
-interface ChartComponent {
+interface ChartComponentDelete {
     @Component.Factory
     interface Factory {
-        fun create(applicationComponent: ApplicationComponent): ChartComponent
+        fun create(applicationComponent: ApplicationComponent): ChartComponentDelete
     }
     fun inject(chartFragment: ChartFragment)
 
 }
+ */

@@ -1,6 +1,6 @@
 package com.simtop.chart.presentation.chart
 
-import android.util.Log
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,9 +9,8 @@ import com.simtop.chart.domain.usecases.GetMarketPriceUseCase
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
 
-class ChartViewModel @Inject constructor(
+class ChartViewModel @ViewModelInject constructor(
     private val getMarketPriceUseCase: GetMarketPriceUseCase,
 ) : ViewModel() {
 

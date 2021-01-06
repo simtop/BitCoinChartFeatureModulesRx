@@ -6,12 +6,16 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
 import com.simtop.bitcoinapp.R
-import com.simtop.bitcoinapp.di.TestApplicationComponent
 import com.simtop.bitcoinapp.MainActivity
 import com.simtop.bitcoinapp.robots.homeScreen
 import com.simtop.bitcoinapp.utils.*
+import com.simtop.di.UrlModule
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,9 +23,14 @@ import java.net.HttpURLConnection
 import javax.inject.Inject
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class ChartTest : BaseTest() {
+@HiltAndroidTest
+@UninstallModules(UrlModule::class)
+class ChartTest {
 
-    @get:Rule
+    @get:Rule(order = 0)
+    var hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
     val scenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
     private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -35,9 +44,9 @@ class ChartTest : BaseTest() {
     @Inject
     lateinit var mockWebServer: MockWebServer
 
-
-    init {
-        injectTest()
+    @Before
+    fun setUp() {
+        hiltRule.inject()
     }
 
     private val progressBarVisibility by lazy {
@@ -76,10 +85,5 @@ class ChartTest : BaseTest() {
             registerIdlingRegistry(progressBarVisibility)
             isToastDisplayed("HTTP 503 Server Error")
         }
-    }
-
-    override fun injectTest() {
-        (application.appComponent as TestApplicationComponent)
-            .inject(this)
     }
 }

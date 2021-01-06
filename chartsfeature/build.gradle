@@ -2,6 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
+
 
 android {
     compileSdkVersion ApplicationConfig.compileSdk
@@ -72,8 +74,11 @@ dependencies {
     implementation Libs.converter_gson
     implementation Libs.logging_interceptor
 
-    implementation Libs.dagger
-    kapt Libs.dagger_compiler
+    implementation "com.google.dagger:hilt-android:2.28.1-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.28.1-alpha"
+
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
+    kapt "androidx.hilt:hilt-compiler:1.0.0-alpha01"
 
     implementation project(Modules.core)
     implementation project(Modules.test_utils)
@@ -101,8 +106,6 @@ dependencies {
     androidTestImplementation Libs.mockk
     androidTestImplementation Libs.junit_ktx
     androidTestImplementation Libs.navigation_testing
-    androidTestImplementation Libs.dagger
-    kaptAndroidTest Libs.dagger_compiler
     androidTestImplementation Libs.fragment_testing
     androidTestImplementation Libs.mockwebserver
 }
