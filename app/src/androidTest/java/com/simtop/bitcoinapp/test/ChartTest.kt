@@ -19,7 +19,7 @@ import java.net.HttpURLConnection
 import javax.inject.Inject
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class ChartTest : BaseTest() {
+class ChartTest : BaseTest() { 
 
     @get:Rule
     val scenarioRule = ActivityScenarioRule(MainActivity::class.java)
