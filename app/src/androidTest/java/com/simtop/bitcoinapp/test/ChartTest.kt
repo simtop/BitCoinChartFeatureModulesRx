@@ -9,7 +9,7 @@ import com.simtop.bitcoinapp.R
 import com.simtop.bitcoinapp.MainActivity
 import com.simtop.bitcoinapp.robots.homeScreen
 import com.simtop.bitcoinapp.utils.*
-import com.simtop.di.UrlModule
+import com.simtop.chart.di.UrlModule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules

@@ -1,4 +1,4 @@
-package com.simtop.di
+package com.simtop.chart.di
 
 import dagger.Module
 import dagger.Provides
